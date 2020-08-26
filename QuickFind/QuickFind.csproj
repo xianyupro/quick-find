@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92FCE067-E2F1-4401-8EB2-58EFF980539D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>QuickFind</RootNamespace>
+    <AssemblyName>菠萝</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon-open.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>99599184DDFE315E503D92DAA83D5B4D21B50D16</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>QuickFind_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AipSdk, Version=3.6.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Baidu.AI.3.6.14\lib\net45\AipSdk.dll</HintPath>
+    </Reference>
+    <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.24.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.24\lib\Net40\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialSkin.0.2.1\lib\MaterialSkin.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.SQLite, Version=1.0.113.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.113.1\lib\net45\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Microsoft SDKs\UWPNuGetPackages\runtime.win10-x86.microsoft.net.native.compiler\2.2.7-rel-27913-00\tools\x86\ilc\tools\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoStart\AutoStart.cs" />
+    <Compile Include="BoLoSearch\AttributeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoLoSearch\AttributeForm.designer.cs">
+      <DependentUpon>AttributeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BoLoSearch\BoLoSearch.cs" />
+    <Compile Include="BoLoSearch\GetSystemIcon.cs" />
+    <Compile Include="BoLoSearch\PrivilegeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoLoSearch\PrivilegeForm.designer.cs">
+      <DependentUpon>PrivilegeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BoLoSearch\QueryEngine\Engine.cs" />
+    <Compile Include="BoLoSearch\QueryEngine\FileAndDirectoryEntry.cs" />
+    <Compile Include="BoLoSearch\QueryEngine\FrnFilePath.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnControlCode.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnEntry.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnErrorCode.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnJournalData.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnOperator.cs" />
+    <Compile Include="BoLoSearch\UsnOperation\UsnReasonCode.cs" />
+    <Compile Include="BoLoSearch\Win32\Constants\Win32ApiConstant.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\BY_HANDLE_FILE_INFORMATION.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\CREATE_USN_JOURNAL_DATA.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\MFT_ENUM_DATA.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\POINT.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\READ_USN_JOURNAL_DATA.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\USN_JOURNAL_DATA.cs" />
+    <Compile Include="BoLoSearch\Win32\Structures\USN_RECORD_V2.cs" />
+    <Compile Include="BoLoSearch\Win32\Win32Api.cs" />
+    <Compile Include="Helper\ListViewItemComparer.cs" />
+    <Compile Include="Helper\Settings.cs" />
+    <Compile Include="HooK\HotKey.cs" />
+    <Compile Include="OCR\PrScrn.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ResultForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResultForm.Designer.cs">
+      <DependentUpon>ResultForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BoLoSearch\SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BoLoSearch\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SpiderCommon\JsonHelper.cs" />
+    <Compile Include="SpiderCommon\SpiderHelper.cs" />
+    <Compile Include="QuickForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QuickForm.Designer.cs">
+      <DependentUpon>QuickForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HooK\GlobalHook.cs" />
+    <Compile Include="HooK\KeyboardHook.cs" />
+    <Compile Include="HooK\KeyboardSimulator.cs" />
+    <Compile Include="HooK\MouseHook.cs" />
+    <Compile Include="HooK\MouseSimulator.cs" />
+    <Compile Include="OCR\OCR.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TranslateApi\TranslateAPI.cs" />
+    <Compile Include="Readme\UpdateInfoForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Readme\UpdateInfoForm.Designer.cs">
+      <DependentUpon>UpdateInfoForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wallpaper\BingImageProvider.cs" />
+    <Compile Include="Wallpaper\Wallpaper.cs" />
+    <EmbeddedResource Include="BoLoSearch\AttributeForm.resx">
+      <DependentUpon>AttributeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BoLoSearch\PrivilegeForm.resx">
+      <DependentUpon>PrivilegeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QuickForm.resx">
+      <DependentUpon>QuickForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResultForm.resx">
+      <DependentUpon>ResultForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BoLoSearch\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Readme\UpdateInfoForm.resx">
+      <DependentUpon>UpdateInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="QuickFind_TemporaryKey.pfx" />
+    <None Include="Resources\Movie.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="costura32\SQLite.Interop.dll" />
+    <EmbeddedResource Include="costura32\PrScrn.dll" />
+    <Content Include="favicon-open.ico" />
+    <None Include="bin\Debug\favicon-open.ico" />
+    <None Include="bin\Debug\favicon-close.ico" />
+    <None Include="bin\Debug\菠萝open.png" />
+    <None Include="bin\Debug\菠萝close.png" />
+    <None Include="Resources\fileIco.ico" />
+    <None Include="Resources\2018Movie.txt" />
+    <None Include="Resources\Init.jpg" />
+    <None Include="Resources\NeatDM.exe" />
+    <None Include="Resources\pdflib.dll" />
+    <None Include="Resources\Fish.exe" />
+    <None Include="Resources\folder.png" />
+    <None Include="Resources\readme" />
+    <None Include="Resources\xml.png" />
+    <None Include="Resources\xml文件.png" />
+    <None Include="Resources\文件夹 %281%29.png" />
+    <None Include="Resources\SharpShell.dll" />
+    <None Include="Resources\srm.exe" />
+    <None Include="Resources\ImgP.dll" />
+    <Content Include="skyMap.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BoLoSearch\Movies\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.2.0\build\Fody.targets" Condition="Exists('..\packages\Fody.6.2.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.2.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.2.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.113.1\build\net45\System.Data.SQLite.Core.targets')" />
+</Project>
