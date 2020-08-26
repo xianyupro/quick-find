@@ -29,7 +29,7 @@ namespace QuickFind
         public ResultForm(String Title, String result)
         {
             InitializeComponent();
-            //this.ShowInTaskbar = false;///使窗体不显示在任务栏
+            this.ShowInTaskbar = false;///使窗体不显示在任务栏
             this.Title = Title; this.Result = result;
 
             #region 设置窗体高度
@@ -42,8 +42,9 @@ namespace QuickFind
                 }
             }
             int length = (int)((count * 6 + (result.Length - count) * 16.5) / 360 + 1);
-            this.Height = 72 + length * 20 + 5;
-            ResultLabel.Height = length * 20;
+            
+
+            //ResultLabel.Height = length * 20;
             #endregion
 
             #region 设置窗体出现位置
@@ -190,7 +191,10 @@ namespace QuickFind
             }
         }
 
-
+        private void ResultLabel_SizeChanged(object sender, EventArgs e)
+        {
+            this.Height = 74 + ResultLabel.Height + 8;
+        }
 
         private void ResultLabel_DoubleClick(object sender, EventArgs e)
         {
