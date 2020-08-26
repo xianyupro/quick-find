@@ -29,7 +29,7 @@ namespace QuickFind
         public ResultForm(String Title, String result)
         {
             InitializeComponent();
-            this.ShowInTaskbar = false;///使窗体不显示在任务栏
+            //this.ShowInTaskbar = false;///使窗体不显示在任务栏
             this.Title = Title; this.Result = result;
 
             #region 设置窗体高度
@@ -74,6 +74,7 @@ namespace QuickFind
             ResultLabel.Text = result == "Error -2" ? "网络出错，请稍后重试" + result : result;
             //this.Focus() = false;
             //SetForegroundWindow(this.Handle);
+            
         }
 
         //protected override bool ShowWithoutActivation
@@ -83,7 +84,7 @@ namespace QuickFind
 
         private void ResultForm_Load(object sender, EventArgs e)
         {
-            TopMost = true;
+            //TopMost = true;
         }
         private void ResultForm_Activated(object sender, EventArgs e)
         {

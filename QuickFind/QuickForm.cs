@@ -31,6 +31,8 @@ namespace QuickFind
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
 
+        [DllImport("user32.dll", EntryPoint = "SetForegroundWindow")]
+        public static extern bool SetForegroundWindow(IntPtr hWnd);//设置此窗体为活动窗体
 
         //API 常數定義
         private const int SW_HIDE = 0;
@@ -842,7 +844,9 @@ namespace QuickFind
                 ResultForm resultForm = new ResultForm(Select_str, resultStr);
                 ResultFormShow = false;
                 //resultForm.Show();
+                //SetForegroundWindow(resultForm.Handle);
                 ShowWindow((int)resultForm.Handle, SW_SHOWNOACTIVATE);
+                SetWindowPos(resultForm.Handle, -1, 0, 0, 0, 0, 1 | 2 | 0x0010);
             }
         }
         #endregion
