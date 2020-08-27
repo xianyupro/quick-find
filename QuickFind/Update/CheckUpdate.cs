@@ -21,7 +21,6 @@ namespace QuickFind.Update
             headers.Add("Timeout", "2000");
             headers.Add("ContentType", "application/x-www-form-urlencoded; charset=UTF-8");
             headers.Add("UserAgent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36");
-            //headers.Add("Method", "POST");
             try
             {
                 Request Response = new Request(VersionString, headers);
@@ -30,8 +29,10 @@ namespace QuickFind.Update
                 if(VersionNum> settings.VersionNum)
                 {
                     UpdateDetail = result["Version"][0]["UpdateDetail"].ToString();
+                    DownloadUrl = result["Version"][0]["DownloadUrl"].ToString();
                     var Response_rd = new Request(UpdateDetail, headers);
                     Response_rd.SaveContent(@"C:\Program Files\菠萝工具箱\UpdateDetail.html", Response_rd.GetContent());
+                    DownloadEXE();
                     return true;
                 }
                 else
@@ -43,6 +44,25 @@ namespace QuickFind.Update
             {
                 return false;
             }
+        }
+
+        public static bool DownloadEXE()
+        {
+            //string fileName = "test.doc";//客户端保存的文件名 
+            //string filePath = Server.MapPath("../ReportTemplate/test.doc");//路径 
+
+            ////以字符流的形式下载文件 
+            //FileStream fs = new FileStream(filePath, FileMode.Open);
+            //byte[] bytes = new byte[(int)fs.Length];
+            //fs.Read(bytes, 0, bytes.Length);
+            //fs.Close();
+            //Response.ContentType = "application/octet-stream";
+            ////通知浏览器下载文件而不是打开 
+            //Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
+            //Response.BinaryWrite(bytes);
+            //Response.Flush();
+            //Response.End();
+            return true;
         }
 
     }
