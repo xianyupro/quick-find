@@ -52,36 +52,32 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.ResultLabel.AutoSize = true;
             this.ResultLabel.Depth = 0;
-            this.ResultLabel.Font = new System.Drawing.Font("微软雅黑 Light", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ResultLabel.Font = new System.Drawing.Font("Roboto", 11F);
             this.ResultLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.ResultLabel.Location = new System.Drawing.Point(10, 74);
-            this.ResultLabel.MaximumSize = new System.Drawing.Size(360, 1000);
+            this.ResultLabel.MaximumSize = new System.Drawing.Size(360, 1800);
             this.ResultLabel.MinimumSize = new System.Drawing.Size(360, 0);
             this.ResultLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.ResultLabel.Name = "ResultLabel";
-            this.ResultLabel.Size = new System.Drawing.Size(360, 50);
+            this.ResultLabel.Size = new System.Drawing.Size(360, 18);
             this.ResultLabel.TabIndex = 1;
             this.ResultLabel.Text = "他说中国对南中国对南中国海他说中国对南中国海";
-            this.ResultLabel.SizeChanged += new System.EventHandler(this.ResultLabel_SizeChanged);
             this.ResultLabel.DoubleClick += new System.EventHandler(this.ResultLabel_DoubleClick);
             // 
             // ResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(382, 135);
+            this.ClientSize = new System.Drawing.Size(382, 110);
             this.ControlBox = false;
             this.Controls.Add(this.ResultLabel);
             this.Controls.Add(this.SEbt);
-            this.MaximumSize = new System.Drawing.Size(382, 800);
+            this.MaximumSize = new System.Drawing.Size(382, 1800);
             this.MinimumSize = new System.Drawing.Size(382, 103);
             this.Name = "ResultForm";
             this.Opacity = 0.93D;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "ResultForm";
-            this.Activated += new System.EventHandler(this.ResultForm_Activated);
-            this.Deactivate += new System.EventHandler(this.ResultForm_Deactivate);
-            this.Load += new System.EventHandler(this.ResultForm_Load);
             this.DoubleClick += new System.EventHandler(this.ResultForm_DoubleClick);
             this.ResumeLayout(false);
             this.PerformLayout();

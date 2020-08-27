@@ -32,29 +32,6 @@ namespace QuickFind
             this.ShowInTaskbar = false;///使窗体不显示在任务栏
             this.Title = Title; this.Result = result;
 
-            #region 设置窗体高度
-            int count = 0;
-            for (int i = 0; i < result.Length; i++)
-            {
-                if (System.Text.RegularExpressions.Regex.IsMatch(result.Substring(i, 1), @"(?i)^[0-9a-z]+$"))
-                {
-                    count++;
-                }
-            }
-            int length = (int)((count * 6 + (result.Length - count) * 16.5) / 360 + 1);
-            
-
-            //ResultLabel.Height = length * 20;
-            #endregion
-
-            #region 设置窗体出现位置
-            int SH = Screen.PrimaryScreen.Bounds.Height;
-            int SW = Screen.PrimaryScreen.Bounds.Width;
-            GetCursorPos(ref localP);
-            this.Left = localP.X + 20 + this.Width > SW ? SW - this.Width : localP.X + 20;
-            this.Top = localP.Y + 20 + this.Height > SH ? SH - this.Height : localP.Y + 20;
-            #endregion
-
             #region 设置按键事件
             mouseHook.MouseDown += new MouseEventHandler((s, e) =>
             {
@@ -73,24 +50,33 @@ namespace QuickFind
 
             this.Text = Title.Length > 5 ? Title.Substring(0, 5) + "..." : Title;
             ResultLabel.Text = result == "Error -2" ? "网络出错，请稍后重试" + result : result;
-            //this.Focus() = false;
-            //SetForegroundWindow(this.Handle);
+
+            #region 设置窗体宽高
+            while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+            {
+                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+            }
             
+            this.Height = 74 + ResultLabel.Height + 8;
+            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+            this.Width = 10 + ResultLabel.Width + 10;
+            SEbt.Location =new Point( Width-85,SEbt.Location.Y);
+            #endregion
+
+            #region 设置窗体出现位置
+            int SH = Screen.PrimaryScreen.Bounds.Height;
+            int SW = Screen.PrimaryScreen.Bounds.Width;
+            GetCursorPos(ref localP);
+            this.Left = localP.X + 20 + this.Width > SW ? SW - this.Width - 10 : localP.X + 20;
+            this.Top = localP.Y + 30 + this.Height > SH ? SH - this.Height - 30 : localP.Y + 20;
+            #endregion
+
         }
 
         //protected override bool ShowWithoutActivation
         //{
         //    get{return true;}
         //}
-
-        private void ResultForm_Load(object sender, EventArgs e)
-        {
-            //TopMost = true;
-        }
-        private void ResultForm_Activated(object sender, EventArgs e)
-        {
-            //SetActiveWindow(avtiveInptr);
-        }
 
         private void AddMouseEvent(string eventType, string button, int x, int y, string delta)
         {
@@ -118,12 +104,6 @@ namespace QuickFind
             if (eventType == "MouseUp" && button == "Right")
             {
             }
-        }
-
-
-        private void ResultForm_Deactivate(object sender, EventArgs e)
-        {
-            //DisposeForm();
         }
 
         private void DisposeForm()
@@ -191,10 +171,6 @@ namespace QuickFind
             }
         }
 
-        private void ResultLabel_SizeChanged(object sender, EventArgs e)
-        {
-            this.Height = 74 + ResultLabel.Height + 8;
-        }
 
         private void ResultLabel_DoubleClick(object sender, EventArgs e)
         {
