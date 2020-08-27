@@ -18,7 +18,7 @@ namespace QuickFind
             webBrowser1.IsWebBrowserContextMenuEnabled = true; // 禁用右键菜单  
             webBrowser1.WebBrowserShortcutsEnabled = true; //禁用快捷键  
             webBrowser1.AllowWebBrowserDrop = false; // 禁止文件拖动  
-            webBrowser1.Navigate(@"C:\Program Files\菠萝工具箱\readme.html");
+            webBrowser1.Navigate(@"C:\Program Files\菠萝工具箱\UpdateDetail.html");
             //webBrowser1.Navigated += WebBrowserNavigatedEventHandler;
             //webBrowser1.DocumentCompleted += WebBrowserDocumentCompletedEventHandler;
             //webBrowser1.Document.Window.Error += new HtmlElementErrorEventHandler(Window_Error);

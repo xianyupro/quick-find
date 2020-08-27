@@ -91,6 +91,16 @@ namespace BingWallpaper
             }
         }
 
+        public int VersionNum
+        {
+            get { return _options.VersionNum; }
+            set
+            {
+                _options.VersionNum = value;
+                Save();
+            }
+        }
+
         #endregion
 
         private void Save()
@@ -117,6 +127,8 @@ namespace BingWallpaper
             public string ImgCopyrightLink = "https://www.bing.com";
             [DataMember]
             public string UpdateImgDay = "0";
+            [DataMember]
+            public int VersionNum = 11;
         }
     }
 }

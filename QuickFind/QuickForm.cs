@@ -4,6 +4,7 @@ using Microsoft.Win32;
 using MouseKeyboardLibrary;
 using QuickFind.OCR;
 using QuickFind.Properties;
+using QuickFind.Update;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -215,7 +216,7 @@ namespace QuickFind
         {
             InitializeComponent();
 
-            boLoSearch = new BoLoSearch.BoLoSearch();
+            //boLoSearch = new BoLoSearch.BoLoSearch();
 
             SetStartup(_settings.LaunchOnStartup);
             AddTrayIcons();
@@ -300,8 +301,8 @@ namespace QuickFind
 
         protected override void OnLoad(EventArgs e)
         {
-            Visible = false; // 隐藏窗体
-            ShowInTaskbar = false; // 移除状态栏
+            //Visible = false; // 隐藏窗体
+            //ShowInTaskbar = false; // 移除状态栏
             base.OnLoad(e);
         }
 
@@ -458,7 +459,7 @@ namespace QuickFind
 
             byte[] readme_bytes = Resources.readme;
             //创建一个文件流
-            FileStream fsreadme = new FileStream(@"C:\Program Files\菠萝工具箱\readme.html", FileMode.Create);
+            FileStream fsreadme = new FileStream(@"C:\Program Files\菠萝工具箱\UpdateDetail.html", FileMode.Create);
             //将byte数组写入文件中
             fsreadme.Write(readme_bytes, 0, readme_bytes.Length);
             //所有流类型都要关闭流，否则会出现内存泄露问题
@@ -856,7 +857,8 @@ namespace QuickFind
         {
             //IntPtr Forehwd = GetForegroundWindow();
             //SetWindowPos(Forehwd, -1, 0, 0, 0, 0, 1 | 2);
-            var json = JsonHelper.Readjson("1.json");
+            //var json = JsonHelper.Readjson("1.json");
+            CheckUpdate.CheckVersion(_settings);
         }
 
 
