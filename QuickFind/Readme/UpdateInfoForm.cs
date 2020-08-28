@@ -77,6 +77,7 @@ namespace QuickFind
                             CheckAUpdateBt.Enabled = true;
                             CheckAUpdateBt.Text = NewVersion ? "立即更新" : "检测新版本";
                             webBrowser1.Navigate(@"C:\Program Files\菠萝工具箱\UpdateDetail.html");
+                            cheackLoading = false;
                         }), null);
                         MessageBox.Show("当前存在新版本，请及时更新。");
                     }
@@ -86,10 +87,11 @@ namespace QuickFind
                         {
                             CheckAUpdateBt.Enabled = true;
                             CheckAUpdateBt.Text = NewVersion ? "立即更新" : "检测新版本";
+                            cheackLoading = false;
                         }), null);
                         MessageBox.Show("当前已经是最新版本！");
                     }
-                    cheackLoading = false;
+                    
                 }).Start();
                 
             }
