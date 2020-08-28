@@ -54,6 +54,7 @@ namespace QuickFind
         }
         private void CheckAUpdateBt_Click(object sender, EventArgs e)
         {
+            
             if (CheckAUpdateBt.Text == "立即更新")
             {
                 check.ResumeSoftware();
@@ -61,6 +62,8 @@ namespace QuickFind
             }
             else
             {
+                CheckAUpdateBt.Text = "正在检测更新...";
+                CheckAUpdateBt.Enabled = false;
                 new Thread(() =>
                 {
                     cheackLoading = true;
@@ -71,6 +74,7 @@ namespace QuickFind
                         BeginInvoke(new Action(() =>
                         {
                             UpdateLabel.Visible = NewVersion;
+                            CheckAUpdateBt.Enabled = true;
                             CheckAUpdateBt.Text = NewVersion ? "立即更新" : "检测新版本";
                             webBrowser1.Navigate(@"C:\Program Files\菠萝工具箱\UpdateDetail.html");
                         }), null);
@@ -78,6 +82,11 @@ namespace QuickFind
                     }
                     else
                     {
+                        BeginInvoke(new Action(() =>
+                        {
+                            CheckAUpdateBt.Enabled = true;
+                            CheckAUpdateBt.Text = NewVersion ? "立即更新" : "检测新版本";
+                        }), null);
                         MessageBox.Show("当前已经是最新版本！");
                     }
                     cheackLoading = false;

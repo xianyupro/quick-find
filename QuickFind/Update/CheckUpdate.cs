@@ -94,7 +94,7 @@ namespace QuickFind.Update
 
         public void ResumeSoftware()
         {
-            string sleep2 = "ping -n 3 127.1>nul ";
+            string sleep2 = "ping -n 4 127.1>nul ";
             string deleteBolo = "del / a / f / q \"菠萝.exe\"";
             string renameBolo = "move \"C:\\Program Files\\菠萝工具箱\\菠萝.exe\" \"菠萝.exe\"";
             string startBolo = "\"菠萝.exe\"";
