@@ -550,7 +550,7 @@ namespace QuickFind
             var str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
             if (str == "")
             {
-                Thread.Sleep(140);
+                Thread.Sleep(250);
                 str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
             }
             if (str != "")
@@ -575,7 +575,7 @@ namespace QuickFind
                 str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
                 Console.WriteLine(str);
             }
-            //if (ClipboardData != "") Clipboard.SetText(ClipboardData);
+            if (ClipboardData != "") Clipboard.SetText(ClipboardData);
             return str;
         }
 

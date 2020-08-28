@@ -26,12 +26,12 @@ namespace QuickFind
         private Point localP = new Point();
         private string Title = "", Result = "";
         private bool lock_Form = false;
-        public ResultForm(String Title, String result)
+        public ResultForm(String _Title, String result)
         {
             InitializeComponent();
             this.ShowInTaskbar = false;///使窗体不显示在任务栏
-            this.Title = Title; this.Result = result;
-
+            this.Result = result;
+            Title = _Title;
             #region 设置按键事件
             mouseHook.MouseDown += new MouseEventHandler((s, e) =>
             {
@@ -48,7 +48,7 @@ namespace QuickFind
             mouseHook.Start();
             #endregion
 
-            this.Text = Title.Length > 5 ? Title.Substring(0, 5) + "..." : Title;
+            this.Text = Title.Length > 5 ? "**" + Title.Substring(0, 5) + "..." : "**" + Title;
             ResultLabel.Text = result == "Error -2" ? "网络出错，请稍后重试" + result : result;
 
             #region 设置窗体宽高
@@ -84,12 +84,14 @@ namespace QuickFind
             {
                 if (x < this.Left || x > this.Left + this.Width)
                 {
-                    DisposeForm();
+                    if(!lock_Form)
+                        DisposeForm();
                     return;
                 }
                 if (y < this.Top || y > this.Top + this.Height)
                 {
-                    DisposeForm();
+                    if (!lock_Form)
+                        DisposeForm();
                     return;
                 }
             }
@@ -108,7 +110,6 @@ namespace QuickFind
 
         private void DisposeForm()
         {
-            while (lock_Form) ;
             mouseHook.Stop();
             this.Close();
             this.Dispose();
@@ -116,14 +117,16 @@ namespace QuickFind
 
         private void ResultForm_DoubleClick(object sender, EventArgs e)
         {
-            Clipboard.SetText(Title);
+            lock_Form = true;
+            if (Title!="") Clipboard.SetText(Title);
             ResultLabel.Text = "原文内容已复制至剪切板"; ResultLabel.Update();
             new Thread(() =>
             {
-                Thread.Sleep(700); BeginInvoke(new Action(() =>
+                Thread.Sleep(700); 
+                BeginInvoke(new Action(() =>
                 {
-                    while (lock_Form) ;
-                    this.Close();
+                    lock_Form = false;
+                    DisposeForm();
                 }), null);
             }).Start();
         }
@@ -174,14 +177,16 @@ namespace QuickFind
 
         private void ResultLabel_DoubleClick(object sender, EventArgs e)
         {
-            Clipboard.SetText(Result);
+            lock_Form = true;
+            if (Result != "")  Clipboard.SetText(Result);
             ResultLabel.Text = "翻译内容已复制至剪切板"; ResultLabel.Update();
             new Thread(() =>
             {
-                Thread.Sleep(700); BeginInvoke(new Action(() =>
+                Thread.Sleep(700); 
+                BeginInvoke(new Action(() =>
                 {
-                    while (lock_Form) ;
-                    this.Close();
+                    lock_Form = false;
+                    DisposeForm();
                 }), null);
             }).Start();
         }
