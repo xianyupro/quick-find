@@ -218,7 +218,7 @@ namespace QuickFind
         {
             InitializeComponent();
 
-            //boLoSearch = new BoLoSearch.BoLoSearch();
+            boLoSearch = new BoLoSearch.BoLoSearch();
 
             SetStartup(_settings.LaunchOnStartup);
 
