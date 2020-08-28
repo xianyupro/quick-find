@@ -100,6 +100,15 @@ namespace BingWallpaper
                 Save();
             }
         }
+        public double UpdateTime
+        {
+            get { return _options.UpdateTime; }
+            set
+            {
+                _options.UpdateTime = value;
+                Save();
+            }
+        }
 
         #endregion
 
@@ -128,7 +137,9 @@ namespace BingWallpaper
             [DataMember]
             public string UpdateImgDay = "0";
             [DataMember]
-            public int VersionNum = 11;
+            public int VersionNum = 10;
+            [DataMember]
+            public double UpdateTime = 0.5;
         }
     }
 }

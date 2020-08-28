@@ -199,10 +199,12 @@ namespace QuickFind
         private bool ResultFormShow = false;
         private bool cancelRightBt = false;
         private bool cancelRightBtCMD = false;
+        public static bool NewVersionExist = false;
 
         private BingImageProvider _provider = new BingImageProvider();
         private Image _currentWallpaper;
         private Settings _settings = new Settings();
+        private CheckUpdate update;
 
         public BoLoSearch.BoLoSearch boLoSearch;
         public static bool StartUpdateDB = false;
@@ -219,6 +221,9 @@ namespace QuickFind
             //boLoSearch = new BoLoSearch.BoLoSearch();
 
             SetStartup(_settings.LaunchOnStartup);
+
+            update = new CheckUpdate(_settings);
+
             AddTrayIcons();
 
             mouseHook.MouseDown += new MouseEventHandler((s, e) =>
@@ -260,6 +265,11 @@ namespace QuickFind
             _trayIcon.Icon = _settings.aiTranslate ? Resources.favicon_open : Resources.favicon_close;
 
             registerCom(true);
+
+
+            Thread thread_update = new Thread(UpdateCheck);
+            thread_update.IsBackground = true;
+            thread_update.Start();
         }
 
         // 在此事件中决定是否关机或logoff
@@ -301,8 +311,8 @@ namespace QuickFind
 
         protected override void OnLoad(EventArgs e)
         {
-            //Visible = false; // 隐藏窗体
-            //ShowInTaskbar = false; // 移除状态栏
+            Visible = false; // 隐藏窗体
+            ShowInTaskbar = false; // 移除状态栏
             base.OnLoad(e);
         }
 
@@ -359,14 +369,6 @@ namespace QuickFind
 
         private void KeyboardEvent(string eventType, string keyCode, string keyChar, string shift, string alt, string control)
         {
-            //Console.WriteLine("---------------开始---------------");
-            //Console.WriteLine(eventType);
-            //Console.WriteLine(keyCode);
-            //Console.WriteLine(keyChar);
-            //Console.WriteLine(shift);
-            //Console.WriteLine(alt);
-            //Console.WriteLine(control);
-            //Console.WriteLine("---------------结束---------------");
             if (eventType == "KeyDown" && keyCode == "S" && alt == "True")
             {
                 ScreenCapture();
@@ -527,12 +529,12 @@ namespace QuickFind
             keybd_event(vbKeyControl, 0, 0, 0);
             //模拟按下C键
             keybd_event(vbKeyInsert, 0, 0, 0);
-            Thread.Sleep(5);
+            //Thread.Sleep(5);
             //模拟松开ctrl键
             keybd_event(vbKeyControl, 0, 2, 0);
             //模拟松开C键
             keybd_event(vbKeyInsert, 0, 2, 0);
-            Thread.Sleep(5);
+            Thread.Sleep(10);
             var str = Clipboard.ContainsText()?(Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()):"";
             Console.WriteLine(str);
             if (ClipboardData != "") Clipboard.SetText(ClipboardData);
@@ -633,7 +635,7 @@ namespace QuickFind
 
         private void OpenWenkuDownload(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start(@"C:\Program Files\菠萝工具箱\文库下载器.exe");
+            Process.Start(@"C:\Program Files\菠萝工具箱\文库下载器.exe");
         }
         //删除文件夹
         public bool DeleteDir(string file)
@@ -788,10 +790,10 @@ namespace QuickFind
             _trayMenu.MenuItems.Add(wenku);
 
             _trayMenu.MenuItems.Add("-");
-            var SettingBt = new MenuItem("更新日志");
+            var SettingBt = new MenuItem("关于软件");
             SettingBt.Click += (s, e) =>
             {
-                UpdateInfoForm updateInfo = new UpdateInfoForm();
+                UpdateInfoForm updateInfo = new UpdateInfoForm(NewVersionExist,update);
                 updateInfo.Show();
             };
             _trayMenu.MenuItems.Add(SettingBt);
@@ -811,7 +813,67 @@ namespace QuickFind
         }
         #endregion
 
-        #region 翻译界面显示
+        #region 屏幕截图
+        private void ScreenCapture()
+        {
+            PrScrn_Dll.PrScrn();
+            try
+            {
+                Image img = Clipboard.GetImage();
+            }
+            catch { Console.WriteLine("Get Image Error"); }
+        }
+        #endregion
+
+
+        #region 检测更新
+
+        bool AskUserKown = false;
+        private void UpdateCheck()
+        {
+            while (true)
+            {
+                NewVersionExist = update.CheckVersion();
+                AskUserKown = NewVersionExist ? true : false;
+                Thread.Sleep((int)(_settings.UpdateTime * 24 * 60 * 60));
+            }
+        }
+
+        #endregion
+        #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //IntPtr Forehwd = GetForegroundWindow();
+            //SetWindowPos(Forehwd, -1, 0, 0, 0, 0, 1 | 2);
+            //var json = JsonHelper.Readjson("1.json");
+            update.CheckVersion();
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            update.ResumeSoftware();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ClosePress(pro);
+        }
+
+
+        private void SearchFiles()
+        {
+            //if (!SearchFormOpen)
+            //{
+            SearchForm searchForm = new SearchForm(boLoSearch);
+            searchForm.Show();
+            //    SearchFormOpen = true;
+            //}
+        }
+        
+
+
         private void UpTimer_Tick(object sender, EventArgs e)
         {
             if (_settings.UpdataWallpaper)
@@ -821,6 +883,13 @@ namespace QuickFind
                     SetWallpaper();
                     _settings.UpdateImgDay = DateTime.Now.DayOfYear.ToString();
                 }
+            }
+
+            if (AskUserKown)
+            {
+                AskUserKown = false;
+                UpdateInfoForm updateInfo = new UpdateInfoForm(NewVersionExist, update);
+                updateInfo.Show();
             }
 
             if (FinishInitSearch)
@@ -850,49 +919,6 @@ namespace QuickFind
                 SetWindowPos(resultForm.Handle, -1, 0, 0, 0, 0, 1 | 2 | 0x0010);
             }
         }
-        #endregion
-        #endregion
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            //IntPtr Forehwd = GetForegroundWindow();
-            //SetWindowPos(Forehwd, -1, 0, 0, 0, 0, 1 | 2);
-            //var json = JsonHelper.Readjson("1.json");
-            CheckUpdate.CheckVersion(_settings);
-        }
-
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //Bitmap bitmap = new Bitmap(@"C:\Users\csu\Desktop\1.png");
-            //string result = UnionOCR.UnionOCR.BaiduAPI(bitmap);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            ClosePress(pro);
-        }
-
-
-        private void SearchFiles()
-        {
-            //if (!SearchFormOpen)
-            //{
-            SearchForm searchForm = new SearchForm(boLoSearch);
-            searchForm.Show();
-            //    SearchFormOpen = true;
-            //}
-        }
-        private void ScreenCapture()
-        {
-            PrScrn_Dll.PrScrn();
-            try
-            {
-                Image img = Clipboard.GetImage();
-            }
-            catch { Console.WriteLine("Get Image Error"); }
-        }
-
 
     }
 }

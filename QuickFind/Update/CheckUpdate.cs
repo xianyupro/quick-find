@@ -1,21 +1,29 @@
 ﻿using BingWallpaper;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using VideoAnalysis.Common;
 
 namespace QuickFind.Update
 {
     public class CheckUpdate
     {
-        private static string VersionString = "https://raw.githubusercontent.com/xianyupro/quick-find/master/QuickFind/bin/Debug/Version.json";
-        private static string DownloadUrl = "https://github.com/xianyupro/quick-find/raw/master/QuickFind/bin/Debug/%E8%8F%A0%E8%90%9D.exe";
-        private static string UpdateDetail = "https://raw.githubusercontent.com/xianyupro/quick-find/master/QuickFind/bin/Debug/UpdateDetail.html";
-
-        public static bool CheckVersion(Settings settings )
+        private  string VersionString = "https://raw.githubusercontent.com/xianyupro/quick-find/master/QuickFind/bin/Debug/Version.json";
+        private  string DownloadUrl = "https://github.com/xianyupro/quick-find/raw/master/QuickFind/bin/Debug/%E8%8F%A0%E8%90%9D.exe";
+        private  string UpdateDetail = "https://raw.githubusercontent.com/xianyupro/quick-find/master/QuickFind/bin/Debug/UpdateDetail.html";
+        private int VersionNum;
+        Settings settings;
+        public CheckUpdate(Settings _settings)
+        {
+            settings = _settings;
+        }
+        public bool CheckVersion()
         {
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Timeout", "2000");
@@ -25,7 +33,7 @@ namespace QuickFind.Update
             {
                 Request Response = new Request(VersionString, headers);
                 var result = Response.GetJson();
-                var VersionNum = (int)result["Version"][0]["VersionNum"];
+                VersionNum = (int)result["Version"][0]["VersionNum"];
                 if(VersionNum> settings.VersionNum)
                 {
                     UpdateDetail = result["Version"][0]["UpdateDetail"].ToString();
@@ -46,24 +54,71 @@ namespace QuickFind.Update
             }
         }
 
-        public static bool DownloadEXE()
-        {
-            //string fileName = "test.doc";//客户端保存的文件名 
-            //string filePath = Server.MapPath("../ReportTemplate/test.doc");//路径 
 
-            ////以字符流的形式下载文件 
-            //FileStream fs = new FileStream(filePath, FileMode.Open);
-            //byte[] bytes = new byte[(int)fs.Length];
-            //fs.Read(bytes, 0, bytes.Length);
-            //fs.Close();
-            //Response.ContentType = "application/octet-stream";
-            ////通知浏览器下载文件而不是打开 
-            //Response.AddHeader("Content-Disposition", "attachment;  filename=" + HttpUtility.UrlEncode(fileName, System.Text.Encoding.UTF8));
-            //Response.BinaryWrite(bytes);
-            //Response.Flush();
-            //Response.End();
-            return true;
+        /// <summary>
+        /// 分段下载文件
+        /// 读取速度和分块大小、网速有关
+        /// </summary>
+        private bool DownloadEXE()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                Uri uri = new Uri(DownloadUrl);
+                var filename = Path.Combine(Application.StartupPath, "菠萝2.exe");
+                //指定url 下载文件
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
+                Stream stream = request.GetResponse().GetResponseStream();
+                //创建写入流
+                FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.Write);
+                byte[] bytes = new byte[1024 * 512];
+                int readCount = 0;
+                while (true)
+                {
+                    readCount = stream.Read(bytes, 0, bytes.Length);
+                    if (readCount <= 0)
+                        break;
+                    fs.Write(bytes, 0, readCount);
+                    fs.Flush();
+                }
+                fs.Close();
+                stream.Close();
+                Console.WriteLine("下载文件成功,用时：" + (DateTime.Now - start).TotalSeconds + "秒");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
+
+        public void ResumeSoftware()
+        {
+            string sleep2 = "ping -n 3 127.1>nul ";
+            string deleteBolo = "del / a / f / q \"菠萝.exe\"";
+            string renameBolo = "rename \"菠萝2.exe\" \"菠萝.exe\"";
+            string startBolo = "\"菠萝.exe\"";
+
+            Process p = new Process();
+            //设置要启动的应用程序
+            p.StartInfo.FileName = "cmd.exe";
+            //是否使用操作系统shell启动
+            p.StartInfo.UseShellExecute = false;
+
+            // 接受来自调用程序的输入信息
+            p.StartInfo.RedirectStandardInput = true;
+
+            //不显示程序窗口
+            p.StartInfo.CreateNoWindow = false;
+            //启动程序
+            p.Start();
+            //向cmd窗口发送输入信息
+            p.StandardInput.WriteLine(sleep2 + "&" + deleteBolo + "&" + renameBolo + "&" + startBolo + "&exit");
+            //p.StandardInput.WriteLine(sleep2 + "&" + deleteBolo + "&" + renameBolo );
+            settings.VersionNum = VersionNum;
+            Application.Exit();
+        }
+
 
     }
 }
