@@ -458,14 +458,16 @@ namespace QuickFind
                 //所有流类型都要关闭流，否则会出现内存泄露问题
                 fssrm.Close();
             }
-
-            byte[] readme_bytes = Resources.readme;
-            //创建一个文件流
-            FileStream fsreadme = new FileStream(@"C:\Program Files\菠萝工具箱\UpdateDetail.html", FileMode.Create);
-            //将byte数组写入文件中
-            fsreadme.Write(readme_bytes, 0, readme_bytes.Length);
-            //所有流类型都要关闭流，否则会出现内存泄露问题
-            fsreadme.Close();
+            if (!File.Exists(@"C:\Program Files\菠萝工具箱\UpdateDetail.html"))
+            {
+                byte[] readme_bytes = Resources.readme;
+                //创建一个文件流
+                FileStream fsreadme = new FileStream(@"C:\Program Files\菠萝工具箱\UpdateDetail.html", FileMode.Create);
+                //将byte数组写入文件中
+                fsreadme.Write(readme_bytes, 0, readme_bytes.Length);
+                //所有流类型都要关闭流，否则会出现内存泄露问题
+                fsreadme.Close();
+            }
         }
         private void registerCom(bool register)
         {
