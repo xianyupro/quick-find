@@ -559,9 +559,11 @@ namespace QuickFind
             }
             else
             {
-                keybd_event(vbKeyEscape, 0, 0, 0);
-                keybd_event(vbKeyEscape, 0, 2, 0);
-                Thread.Sleep(10);
+                CtrlTime = 0; //避免与双击ctrl键调出文件查找器冲突
+                keybd_event(vbKeyControl, 0, 0, 0);
+                keybd_event(vbKeyControl, 0, 2, 0);
+                CtrlTime = 0;//避免与双击ctrl键调出文件查找器冲突
+                Thread.Sleep(20);
                 //模拟按下ctrl键
                 keybd_event(vbKeyControl, 0, 0, 0);
                 //模拟按下C键
