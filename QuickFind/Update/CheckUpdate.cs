@@ -65,7 +65,7 @@ namespace QuickFind.Update
             {
                 DateTime start = DateTime.Now;
                 Uri uri = new Uri(DownloadUrl);
-                var filename = Path.Combine(Application.StartupPath, @"C:\Program Files\菠萝工具箱\菠萝2.exe");
+                var filename =  @"C:\Program Files\菠萝工具箱\菠萝.exe";
                 //指定url 下载文件
                 HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(uri);
                 Stream stream = request.GetResponse().GetResponseStream();
@@ -96,7 +96,7 @@ namespace QuickFind.Update
         {
             string sleep2 = "ping -n 3 127.1>nul ";
             string deleteBolo = "del / a / f / q \"菠萝.exe\"";
-            string renameBolo = "rename \"C:\\Program Files\\菠萝工具箱\\菠萝2.exe\" \"菠萝.exe\"";
+            string renameBolo = "move \"C:\\Program Files\\菠萝工具箱\\菠萝.exe\" \"菠萝.exe\"";
             string startBolo = "\"菠萝.exe\"";
 
             Process p = new Process();

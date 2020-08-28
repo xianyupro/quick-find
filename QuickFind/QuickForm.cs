@@ -299,14 +299,6 @@ namespace QuickFind
             {
                 File.Delete(@"C:\Program Files\菠萝工具箱\srm.exe");
             }
-            //if (File.Exists(@"C:\Program Files\菠萝工具箱\ImgP.dll"))
-            //{
-            //    File.Delete(@"C:\Program Files\菠萝工具箱\ImgP.dll");
-            //}
-            //if (File.Exists(@"C:\Program Files\菠萝工具箱\SharpShell.dll"))
-            //{
-            //    File.Delete(@"C:\Program Files\菠萝工具箱\SharpShell.dll");
-            //}
         }
 
         protected override void OnLoad(EventArgs e)
@@ -316,9 +308,27 @@ namespace QuickFind
             base.OnLoad(e);
         }
 
-
+        
         private void AddMouseEvent(string eventType, string button, int x, int y, string delta)
         {
+
+            if (eventType == "MouseDown" && button == "Middle")
+            {
+                
+            }
+            if (eventType == "MouseUp" && button == "Middle")
+            {
+                if(intervalTime + 1 > (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds)
+                {
+                    var thread = new Thread(() => ScATra());
+                    //注意，一般启动一个线程的时候没有这句话，但是要操作剪切板的话这句话是必需要加上的，因为剪切板只能在单线
+                    //程单元中访问，这里的STA就是指单线程单元
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
+                }
+                intervalTime = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
+            }
+
             if (eventType == "MouseDown" && button == "Left")
             {
                 EnterPnt.X = x; EnterPnt.Y = y;
@@ -351,7 +361,6 @@ namespace QuickFind
                     _trayIcon.Visible = true;
                     cancelRightBt = true;
                     _trayIcon.ShowBalloonTip(500);
-
                 }
             }
 
@@ -502,6 +511,7 @@ namespace QuickFind
 
         private void CopyAndTranslate()
         {
+            if (SCaptrueFlag) return; //在截屏时，不进行复制翻译操作。
             try
             {
                 Select_str = GetCopySelect();
@@ -522,6 +532,7 @@ namespace QuickFind
         /// <returns></returns>
         private String GetCopySelect()
         {
+            
             string ClipboardData = "";
             if (Clipboard.ContainsText())
             {
@@ -530,16 +541,39 @@ namespace QuickFind
             //模拟按下ctrl键
             keybd_event(vbKeyControl, 0, 0, 0);
             //模拟按下C键
-            keybd_event(vbKeyInsert, 0, 0, 0);
-            //Thread.Sleep(5);
+            keybd_event(vbKeyC, 0, 0, 0);
+            //模拟松开C键
+            keybd_event(vbKeyC, 0, 2, 0);
             //模拟松开ctrl键
             keybd_event(vbKeyControl, 0, 2, 0);
-            //模拟松开C键
-            keybd_event(vbKeyInsert, 0, 2, 0);
             Thread.Sleep(10);
-            var str = Clipboard.ContainsText()?(Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()):"";
-            Console.WriteLine(str);
-            if (ClipboardData != "") Clipboard.SetText(ClipboardData);
+            var str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
+            if (str == "")
+            {
+                Thread.Sleep(140);
+                str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
+            }
+            if (str != "")
+            {
+                Console.WriteLine(str);
+            }
+            else
+            {
+                keybd_event(vbKeyEscape, 0, 0, 0);
+                keybd_event(vbKeyEscape, 0, 2, 0);
+                Thread.Sleep(10);
+                //模拟按下ctrl键
+                keybd_event(vbKeyControl, 0, 0, 0);
+                //模拟按下C键
+                keybd_event(vbKeyC, 0, 0, 0);
+                //模拟松开C键
+                keybd_event(vbKeyC, 0, 2, 0);
+                //模拟松开ctrl键
+                keybd_event(vbKeyControl, 0, 2, 0);
+                str = Clipboard.ContainsText() ? (Clipboard.GetText() == ClipboardData ? "" : Clipboard.GetText()) : "";
+                Console.WriteLine(str);
+            }
+            //if (ClipboardData != "") Clipboard.SetText(ClipboardData);
             return str;
         }
 
@@ -837,6 +871,28 @@ namespace QuickFind
         }
         #endregion
 
+        #region 截屏并翻译
+        private bool SCaptrueFlag = false;
+        private void ScATra()
+        {
+            SCaptrueFlag = true;
+            PrScrn_Dll.PrScrn();
+            SCaptrueFlag = false;
+            if (Clipboard.ContainsImage())
+            {
+                Image img = Clipboard.GetImage();
+                var Select_str = UnionOCR.UnionOCR.BaiduAPI(img);
+                if (Select_str != "")
+                {
+                    resultStr = TranslateAPI.Translate(Select_str);
+                    Console.WriteLine(resultStr);
+                    ResultFormShow = true;
+                }
+            }
+        }
+
+        #endregion
+
 
         #region 检测更新
 
@@ -847,7 +903,7 @@ namespace QuickFind
             {
                 NewVersionExist = update.CheckVersion();
                 AskUserKown = NewVersionExist ? true : false;
-                Thread.Sleep((int)(_settings.UpdateTime * 24 * 60 * 60));
+                Thread.Sleep((int)(_settings.UpdateTime * 24 * 60 * 60 * 1000));
             }
         }
 
@@ -859,7 +915,8 @@ namespace QuickFind
             //IntPtr Forehwd = GetForegroundWindow();
             //SetWindowPos(Forehwd, -1, 0, 0, 0, 0, 1 | 2);
             //var json = JsonHelper.Readjson("1.json");
-            update.CheckVersion();
+            //update.CheckVersion();
+            ScreenCapture();
         }
 
 

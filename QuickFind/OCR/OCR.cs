@@ -12,7 +12,7 @@ namespace QuickFind.UnionOCR
 {
     public class UnionOCR
     {
-        public static string BaiduAPI(Bitmap bitmap)
+        public static string BaiduAPI(Image bitmap)
         {
             string OCRresult = "";
             string API_KEY = "p8Tgf4cVCWi0QOGjnqfu22G9";
