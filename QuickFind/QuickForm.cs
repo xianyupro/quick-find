@@ -883,7 +883,7 @@ namespace QuickFind
             if (Clipboard.ContainsImage())
             {
                 Image img = Clipboard.GetImage();
-                var Select_str = UnionOCR.UnionOCR.BaiduAPI(img);
+                Select_str = UnionOCR.UnionOCR.BaiduAPI(img);
                 if (Select_str != "")
                 {
                     resultStr = TranslateAPI.Translate(Select_str);

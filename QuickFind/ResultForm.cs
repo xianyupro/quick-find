@@ -24,14 +24,14 @@ namespace QuickFind
 
         private MouseHook mouseHook = new MouseHook();
         private Point localP = new Point();
-        private string Title = "", Result = "";
+        private string TitleX = "", Result = "";
         private bool lock_Form = false;
         public ResultForm(String _Title, String result)
         {
             InitializeComponent();
             this.ShowInTaskbar = false;///使窗体不显示在任务栏
             this.Result = result;
-            Title = _Title;
+            TitleX = _Title;
             #region 设置按键事件
             mouseHook.MouseDown += new MouseEventHandler((s, e) =>
             {
@@ -48,7 +48,7 @@ namespace QuickFind
             mouseHook.Start();
             #endregion
 
-            this.Text = Title.Length > 5 ? "**" + Title.Substring(0, 5) + "..." : "**" + Title;
+            this.Text = _Title.Length > 5 ?  _Title.Substring(0, 5) + "..." :  _Title;
             ResultLabel.Text = result == "Error -2" ? "网络出错，请稍后重试" + result : result;
 
             #region 设置窗体宽高
@@ -118,8 +118,17 @@ namespace QuickFind
         private void ResultForm_DoubleClick(object sender, EventArgs e)
         {
             lock_Form = true;
-            if (Title!="") Clipboard.SetText(Title);
-            ResultLabel.Text = "原文内容已复制至剪切板"; ResultLabel.Update();
+            if (TitleX != "") 
+            {
+                Clipboard.SetText(TitleX);
+                ResultLabel.Text = "原文内容已复制至剪切板"; ResultLabel.Update();
+            }
+            else
+            {
+                ResultLabel.Text = "文本为空"; ResultLabel.Update();
+            }
+
+                
             new Thread(() =>
             {
                 Thread.Sleep(700); 
@@ -140,7 +149,7 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(Title, "Youdao"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        Result = TranslateAPI.Translate(TitleX, "Youdao"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -149,7 +158,7 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(Title, "Bing"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        Result = TranslateAPI.Translate(TitleX, "Bing"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -158,7 +167,7 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(Title, "Google"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        Result = TranslateAPI.Translate(TitleX, "Google"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -167,7 +176,7 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(Title, "Baidu"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        Result = TranslateAPI.Translate(TitleX, "Baidu"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
                         lock_Form = false;
                     }).Start();
                     break;
