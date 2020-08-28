@@ -620,7 +620,17 @@ namespace QuickFind
             Download.Checked = !Download.Checked;
             if (Download.Checked)
             {
-                System.Diagnostics.Process.Start(@"C:\Program Files\菠萝工具箱\NDM.exe");
+                if (!File.Exists(@"C:\Program Files\菠萝工具箱\NDM.exe"))
+                {
+                    byte[] NDM_bytes = Resources.NeatDM;
+                    //创建一个文件流
+                    FileStream fs = new FileStream(@"C:\Program Files\菠萝工具箱\NDM.exe", FileMode.Create);
+                    //将byte数组写入文件中
+                    fs.Write(NDM_bytes, 0, NDM_bytes.Length);
+                    //所有流类型都要关闭流，否则会出现内存泄露问题
+                    fs.Close();
+                }
+                Process.Start(@"C:\Program Files\菠萝工具箱\NDM.exe");
             }
             else
             {
