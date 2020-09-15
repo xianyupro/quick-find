@@ -371,7 +371,9 @@ namespace QuickFind
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "SearchForm";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.TopMost = true;
             this.Activated += new System.EventHandler(this.SearchForm_Activated);
             this.Deactivate += new System.EventHandler(this.SearchForm_Deactivate);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SearchForm_FormClosed);
