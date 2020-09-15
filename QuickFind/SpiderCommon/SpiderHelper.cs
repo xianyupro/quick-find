@@ -1,5 +1,4 @@
-﻿using HtmlAgilityPack;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -119,56 +118,7 @@ namespace VideoAnalysis.Common
             }
 
         }
-        /// <summary>
-        /// 一个实例只能调用一次
-        /// </summary>
-        /// <returns></returns>
-        public HtmlNodeCollection GetHtml()
-        {
-            HttpWebResponse HttpWResp = (HttpWebResponse)HttpWReq.GetResponse();
-            StatusCode = HttpWResp.StatusCode == HttpStatusCode.OK;
-            StreamReader sr = new StreamReader(HttpWResp.GetResponseStream(), Encoding.GetEncoding("UTF-8"));
-            HtmlDocument doc = new HtmlDocument();
-            doc.Load(sr);
-            HtmlNodeCollection ulNodes = doc.DocumentNode.ChildNodes;
-            return ulNodes;
-        }
-
-        private HtmlNodeCollection Getelement(HtmlDocument html)
-        {
-            HtmlNodeCollection ulNodes = html.DocumentNode.SelectSingleNode("//div[@id='pane-news']").SelectNodes("ul");
-            //注意路径里"//"表示从根节点开始查找，两个斜杠‘//’表示查找所有childnodes；一个斜杠'/'表示只查找第一层的childnodes（即不查找grandchild）；点斜杠"./"表示从当前结点而不是根结点开始查找。
-            //HtmlNode IDNode = doc.DocumentNode.SelectSingleNode("//div[@id='header']/div[@id='blogTitle']/h1");
-            //HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-            //doc.LoadHtml(url)//博客主页URL
-            //下面的意思是：通过属性id的值，来定位header下的blogTitle节点信息
-            //HtmlNode titleNode = doc.DocumentNode.SelectSingleNode("//div[@id='header']/div[@id='blogTitle']");
-            //if (ulNodes != null && ulNodes.Count > 0)
-            //{
-            //    for (int i = 0; i < ulNodes.Count; i++)
-            //    {
-            //        HtmlNodeCollection liNodes = ulNodes[i].SelectNodes("li");
-            //        for (int j = 0; j < liNodes.Count; j++)
-            //        {
-            //            string title = liNodes[j].SelectSingleNode("a").InnerHtml.Trim();
-            //            string href = liNodes[j].SelectSingleNode("a").GetAttributeValue("href", "").Trim();
-            //            Console.WriteLine("新闻标题：" + title + ",链接：" + href);
-            //        }
-            //    }
-            //}
-            //string name = htmlDoc.DocumentNode
-            //            .SelectNodes("//td/input")
-            //            .First()
-            //            .Attributes["value"].Value;
-
-            //1 //我们获取博客ID
-            //2 IDNode.OuterHtml ///返回结果是：<h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/xuliangxing/">法号阿兴</a></h1>
-            //3 IDNode.InnerHtml ///返回结果是：<a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/xuliangxing/">法号阿兴</a>
-            //4 IDNode.InnerText ///返回结果是：法号阿兴
-
-            //string url = doc.DocumentNode.SelectSingleNode("//div[@id='header']/div[@id='blogTitle']/a").Attributes["href"].Value;
-            return ulNodes;
-        }
+       
 
         public JObject GetJson()
         {

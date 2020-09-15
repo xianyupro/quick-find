@@ -1,5 +1,4 @@
-﻿
-using BingWallpaper;
+﻿using BingWallpaper;
 using Microsoft.Win32;
 using MouseKeyboardLibrary;
 using QuickFind.OCR;
@@ -15,12 +14,12 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TranslateApi;
-using VideoAnalysis.Common;
 using Settings = BingWallpaper.Settings;
+using MouseHook = MouseKeyboardLibrary.MouseHook;
 
 namespace QuickFind
 {
-    public partial class QuickForm : MaterialSkin.Controls.MaterialForm
+    public partial class QuickForm : Form
     {
         #region DLLImport
         [DllImport("user32.dll")]
@@ -935,12 +934,22 @@ namespace QuickFind
 
         private void SearchFiles()
         {
-            //if (!SearchFormOpen)
-            //{
-            SearchForm searchForm = new SearchForm(boLoSearch);
-            searchForm.Show();
-            //    SearchFormOpen = true;
-            //}
+            bool open = false;
+            foreach (Form f in Application.OpenForms)
+            {
+                if (f is SearchForm)
+                {
+                    open = true;
+                    f.Show();
+                    f.BringToFront();
+                }
+            }
+            if (!open)
+            {
+                SearchForm searchForm = new SearchForm(boLoSearch);
+                searchForm.Show();
+                searchForm.BringToFront();
+            }
         }
         
 
