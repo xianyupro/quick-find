@@ -110,6 +110,15 @@ namespace BingWallpaper
             }
         }
 
+        public string TranslateMode
+        {
+            get { return _options.TranslateMode; }
+            set
+            {
+                _options.TranslateMode = value;
+                Save();
+            }
+        }
         #endregion
 
         private void Save()
@@ -140,6 +149,8 @@ namespace BingWallpaper
             public int VersionNum = 10;
             [DataMember]
             public double UpdateTime = 0.5;
+            [DataMember]
+            public string TranslateMode = "Google";
         }
     }
 }

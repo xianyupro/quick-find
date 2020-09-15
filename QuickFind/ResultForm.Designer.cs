@@ -30,14 +30,16 @@
         {
             this.SEbt = new System.Windows.Forms.Button();
             this.ResultLabel = new MaterialSkin.Controls.MaterialLabel();
+            this.cBt1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SEbt
             // 
+            this.SEbt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.SEbt.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.SEbt.Font = new System.Drawing.Font("华文中宋", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.SEbt.ForeColor = System.Drawing.Color.Firebrick;
-            this.SEbt.Location = new System.Drawing.Point(297, 28);
+            this.SEbt.Location = new System.Drawing.Point(301, 28);
             this.SEbt.Name = "SEbt";
             this.SEbt.Size = new System.Drawing.Size(75, 31);
             this.SEbt.TabIndex = 0;
@@ -64,6 +66,20 @@
             this.ResultLabel.Text = "他说中国对南中国对南中国海他说中国对南中国海";
             this.ResultLabel.DoubleClick += new System.EventHandler(this.ResultLabel_DoubleClick);
             // 
+            // cBt1
+            // 
+            this.cBt1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cBt1.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.cBt1.Font = new System.Drawing.Font("华文中宋", 8.999999F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.cBt1.ForeColor = System.Drawing.Color.Firebrick;
+            this.cBt1.Location = new System.Drawing.Point(230, 28);
+            this.cBt1.Name = "cBt1";
+            this.cBt1.Size = new System.Drawing.Size(65, 31);
+            this.cBt1.TabIndex = 0;
+            this.cBt1.Text = "取消换行";
+            this.cBt1.UseVisualStyleBackColor = false;
+            this.cBt1.Click += new System.EventHandler(this.cBt1_Click);
+            // 
             // ResultForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -71,6 +87,7 @@
             this.ClientSize = new System.Drawing.Size(382, 110);
             this.ControlBox = false;
             this.Controls.Add(this.ResultLabel);
+            this.Controls.Add(this.cBt1);
             this.Controls.Add(this.SEbt);
             this.MaximumSize = new System.Drawing.Size(382, 1800);
             this.MinimumSize = new System.Drawing.Size(382, 103);
@@ -88,5 +105,6 @@
 
         private System.Windows.Forms.Button SEbt;
         private MaterialSkin.Controls.MaterialLabel ResultLabel;
+        private System.Windows.Forms.Button cBt1;
     }
 }

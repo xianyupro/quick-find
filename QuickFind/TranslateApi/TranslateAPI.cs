@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BingWallpaper;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
@@ -18,7 +19,7 @@ namespace TranslateApi
         /// </summary>
         /// <param name="str"></param>
         /// <param name="translateMode">Mode ：“Google”，“Bing”，“Youdao”，“Baidu”</param>
-        public static string Translate(String str, string translateMode = "Google")
+        public static string Translate(String str, Settings _settings)
         {
             string TargetLanguage = "", LanguageParas = "", resultStr = "";
             if (str == "") return "Error -1";
@@ -41,7 +42,7 @@ namespace TranslateApi
                 TargetLanguage = "tl=zh-cn";
                 LanguageParas = "&fromLang=en&to=zh-Hans";
             }
-            switch (translateMode)
+            switch (_settings.TranslateMode)
             {
                 case "Google":
                     resultStr = GoogleTranslate(str, TargetLanguage, LanguageParas);
@@ -63,21 +64,25 @@ namespace TranslateApi
             resultStr = GoogleTranslate(str, TargetLanguage, LanguageParas);
             if (resultStr != "")
             {
+                _settings.TranslateMode = "Google";
                 return resultStr;
             }
             resultStr = BingTranslate(str, TargetLanguage, LanguageParas);
             if (resultStr != "")
             {
+                _settings.TranslateMode = "Bing";
                 return resultStr;
             }
             resultStr = YoudaoTranslate(str, TargetLanguage, LanguageParas);
             if (resultStr != "")
             {
+                _settings.TranslateMode = "Youdao";
                 return resultStr;
             }
             resultStr = BaiduTranslate(str, TargetLanguage, LanguageParas);
             if (resultStr != "")
             {
+                _settings.TranslateMode = "Baidu";
                 return resultStr;
             }
             return "Error -2";

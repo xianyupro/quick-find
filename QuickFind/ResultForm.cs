@@ -1,4 +1,5 @@
-﻿using MouseKeyboardLibrary;
+﻿using BingWallpaper;
+using MouseKeyboardLibrary;
 using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -26,12 +27,14 @@ namespace QuickFind
         private Point localP = new Point();
         private string TitleX = "", Result = "";
         private bool lock_Form = false;
-        public ResultForm(String _Title, String result)
+        private Settings settings;
+        public ResultForm(String _Title, String result ,Settings _settings)
         {
             InitializeComponent();
             this.ShowInTaskbar = false;///使窗体不显示在任务栏
             this.Result = result;
             TitleX = _Title;
+            settings = _settings;
             #region 设置按键事件
             mouseHook.MouseDown += new MouseEventHandler((s, e) =>
             {
@@ -60,7 +63,8 @@ namespace QuickFind
             this.Height = 74 + ResultLabel.Height + 8;
             this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
             this.Width = 10 + ResultLabel.Width + 10;
-            SEbt.Location =new Point( Width-85,SEbt.Location.Y);
+            //SEbt.Location =new Point( Width-85,SEbt.Location.Y);
+            SetBt(_settings.TranslateMode);
             #endregion
 
             #region 设置窗体出现位置
@@ -72,11 +76,6 @@ namespace QuickFind
             #endregion
 
         }
-
-        //protected override bool ShowWithoutActivation
-        //{
-        //    get{return true;}
-        //}
 
         private void AddMouseEvent(string eventType, string button, int x, int y, string delta)
         {
@@ -149,7 +148,15 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(TitleX, "Youdao"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        settings.TranslateMode = "Youdao";
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -158,7 +165,15 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(TitleX, "Bing"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        settings.TranslateMode = "Bing";
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -167,7 +182,15 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(TitleX, "Google"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        settings.TranslateMode = "Google";
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
                         lock_Form = false;
                     }).Start();
                     break;
@@ -176,13 +199,110 @@ namespace QuickFind
                     new Thread(() =>
                     {
                         lock_Form = true;
-                        Result = TranslateAPI.Translate(TitleX, "Baidu"); BeginInvoke(new Action(() => { ResultLabel.Text = Result; }), null);
+                        settings.TranslateMode = "Baidu";
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
+                        lock_Form = false;
+                    }).Start();
+                    break;
+            }
+
+        }
+
+        private void SetBt(string mode)
+        {
+            switch (mode)
+            {
+                case "Youdao":
+                    SEbt.Text = "有道翻译";
+                    break;
+                case "Bing":
+                    SEbt.Text = "必应翻译";
+                    break;
+                case "Google":
+                    SEbt.Text = "谷歌翻译";
+                    break;
+                case "Baidu":
+                    SEbt.Text = "百度翻译";
+                    break;
+            }
+        }
+
+        private void cBt1_Click(object sender, EventArgs e)
+        {
+            TitleX = TitleX.Replace("\r\n", "");
+            TitleX = TitleX.Replace("\r", "");
+            TitleX = TitleX.Replace("\n", "");
+            switch (SEbt.Text)
+            {
+                case "百度翻译":
+                    new Thread(() =>
+                    {
+                        lock_Form = true;
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
+                        lock_Form = false;
+                    }).Start();
+                    break;
+                case "有道翻译":
+                    new Thread(() =>
+                    {
+                        lock_Form = true;
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
+                        lock_Form = false;
+                    }).Start();
+                    break;
+                case "必应翻译":
+                    new Thread(() =>
+                    {
+                        lock_Form = true;
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
+                        lock_Form = false;
+                    }).Start();
+                    break;
+                case "谷歌翻译":
+                    new Thread(() =>
+                    {
+                        lock_Form = true;
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => { ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
                         lock_Form = false;
                     }).Start();
                     break;
             }
         }
-
 
         private void ResultLabel_DoubleClick(object sender, EventArgs e)
         {

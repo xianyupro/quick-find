@@ -1,8 +1,8 @@
 {
 	"Version":[
     {
-		"SoftVersion": "2.2.2",
-        "VersionNum": "23",
+		"SoftVersion": "2.2.3",
+        "VersionNum": "24",
         "DownloadUrl":"https://github.com/xianyupro/quick-find/raw/master/QuickFind/bin/Debug/%E8%8F%A0%E8%90%9D.exe",
         "UpdateDetail":"https://raw.githubusercontent.com/xianyupro/quick-find/master/QuickFind/bin/Debug/UpdateDetail.html"
 	 }

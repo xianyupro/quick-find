@@ -515,7 +515,7 @@ namespace QuickFind
             {
                 Select_str = GetCopySelect();
                 if (Select_str == "") return;
-                resultStr = TranslateAPI.Translate(Select_str);
+                resultStr = TranslateAPI.Translate(Select_str, _settings);
                 Console.WriteLine(resultStr);
                 ResultFormShow = Select_str != "";
             }
@@ -885,7 +885,7 @@ namespace QuickFind
                 Select_str = UnionOCR.UnionOCR.BaiduAPI(img);
                 if (Select_str != "")
                 {
-                    resultStr = TranslateAPI.Translate(Select_str);
+                    resultStr = TranslateAPI.Translate(Select_str, _settings);
                     Console.WriteLine(resultStr);
                     ResultFormShow = true;
                 }
@@ -935,20 +935,20 @@ namespace QuickFind
         private void SearchFiles()
         {
             bool open = false;
-            foreach (Form f in Application.OpenForms)
-            {
-                if (f is SearchForm)
-                {
-                    open = true;
-                    f.Show();
-                    f.BringToFront();
-                }
-            }
+            //foreach (Form f in Application.OpenForms)
+            //{
+            //    if (f is SearchForm)
+            //    {
+            //        open = true;
+            //        f.Show();
+            //        f.BringToFront();
+            //    }
+            //}
             if (!open)
             {
                 SearchForm searchForm = new SearchForm(boLoSearch);
                 searchForm.Show();
-                searchForm.BringToFront();
+                //searchForm.BringToFront();
             }
         }
         
@@ -991,7 +991,7 @@ namespace QuickFind
             if (ResultFormShow)
             {
                 if (STOPTranlate) return;
-                ResultForm resultForm = new ResultForm(Select_str, resultStr);
+                ResultForm resultForm = new ResultForm(Select_str, resultStr , _settings);
                 ResultFormShow = false;
                 //resultForm.Show();
                 //SetForegroundWindow(resultForm.Handle);
