@@ -82,7 +82,8 @@ namespace QuickFind
         }
 
 
-        List<string[]> SFlists, SDirs;
+        List<string[]> SFlists = new List<string[]>();
+        List<string[]> SDirs = new List<string[]>();
         private void ShowSearchResult()
         {
             lock_Form = true;
@@ -198,8 +199,6 @@ namespace QuickFind
                 }
 
             }
-            SDirs.Clear();
-            SFlists.Clear();
             GC.Collect();
             GC.WaitForPendingFinalizers();
             //结束数据更新
@@ -214,6 +213,12 @@ namespace QuickFind
         private bool sort = false;
         private void AllFiles_ColumnClick(object sender, ColumnClickEventArgs e)
         {
+            if (e.Column != 2) return;
+            new Thread(() =>
+            {
+                SFlists = !sort ? SFlists.OrderByDescending(item => new FileInfo(item[1]).LastWriteTime).ToList() : SFlists.OrderBy(item => new FileInfo(item[1]).LastWriteTime).ToList();
+                updatefile = true;
+            }).Start();
             AllFiles.BeginUpdate();
             string Asc = ((char)0x25bc).ToString().PadLeft(4, ' ');
             string Des = ((char)0x25b2).ToString().PadLeft(4, ' ');
@@ -229,21 +234,6 @@ namespace QuickFind
                 string oldStr = this.AllFiles.Columns[e.Column].Text.TrimEnd((char)0x25bc, (char)0x25b2, ' ');
                 this.AllFiles.Columns[e.Column].Text = oldStr + Asc;
             }
-            switch (AllFiles.Columns[e.Column].Tag.ToString())
-            {
-                case "N":
-                    AllFiles.ListViewItemSorter = new ListViewItemComparerNum(e.Column, sort);
-                    break;
-                case "D":
-                    AllFiles.ListViewItemSorter = new ListViewItemComparerDate(e.Column, sort);
-                    break;
-                case "T":
-                    AllFiles.ListViewItemSorter = new ListViewItemComparer(e.Column, sort);
-                    break;
-                default:
-                    break;
-            }
-            this.AllFiles.Sort();
             int rowCount = this.AllFiles.Items.Count;
             if (currentCol != -1)
             {
@@ -289,9 +279,12 @@ namespace QuickFind
             {
                 new Thread(() =>
                 {
+                    SDirs.Clear();
+                    SFlists.Clear();
                     var Flist = RecentlyFileHelper.GetRecentlyFiles();
                     SDirs = Flist.Where(item => Directory.Exists(item)).Select(item => new string[] { new DirectoryInfo(item).Name, item }).ToList();
                     SFlists = Flist.Where(item => File.Exists(item)).Select(item => new string[] { new FileInfo(item).Name, item }).ToList();
+                    SFlists = !sort ? SFlists.OrderByDescending(item => new FileInfo(item[1]).LastWriteTime).ToList() : SFlists.OrderBy(item => new FileInfo(item[1]).LastWriteTime).ToList();
                     updatefile = true;
                 }).Start();
             }    
@@ -308,9 +301,12 @@ namespace QuickFind
                 firstOpen = false;
                 new Thread(() =>
                 {
+                    SDirs.Clear();
+                    SFlists.Clear();
                     var Flist = RecentlyFileHelper.GetRecentlyFiles();
                     SDirs = Flist.Where(item => Directory.Exists(item)).Select(item => new string[] { new DirectoryInfo(item).Name, item }).ToList();
                     SFlists = Flist.Where(item => File.Exists(item)).Select(item => new string[] { new FileInfo(item).Name, item }).ToList();
+                    SFlists = !sort ? SFlists.OrderByDescending(item => new FileInfo(item[1]).LastWriteTime).ToList() : SFlists.OrderBy(item => new FileInfo(item[1]).LastWriteTime).ToList();
                     updatefile = true;
                 }).Start();
             }
@@ -322,7 +318,10 @@ namespace QuickFind
                 {
                     new Thread(() =>
                     {
+                        SDirs.Clear();
+                        SFlists.Clear();
                         (SDirs, SFlists) = boLoSearch.getRet(FilterString);
+                        SFlists = !sort ? SFlists.OrderByDescending(item => new FileInfo(item[1]).LastWriteTime).ToList() : SFlists.OrderBy(item => new FileInfo(item[1]).LastWriteTime).ToList();
                         updatefile = true;
                     }).Start();
                     previousFilterTime = 0;
