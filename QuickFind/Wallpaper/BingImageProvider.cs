@@ -27,7 +27,7 @@ namespace BingWallpaper
         public BingImage GetImage()
         {
             Dictionary<string, string> headers = new Dictionary<string, string>();
-            headers.Add("Timeout", "2000");
+            headers.Add("Timeout", "10000");
             headers.Add("ContentType", "application/x-www-form-urlencoded; charset=UTF-8");
             headers.Add("UserAgent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
             string baseUri = "https://www.bing.com";

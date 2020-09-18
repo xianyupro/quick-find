@@ -30,9 +30,15 @@ namespace VideoAnalysis.Common
         {
             HttpWReq = (HttpWebRequest)WebRequest.Create(url);
         }
-        /// <summary>
-        /// 
-        /// </summary>
+
+
+
+        /*
+         * 对于post，存在两种形式 ：
+         * 如果 contentype 为 "application/x-www-form-urlencoded" 表单类型，那么 参数 postFromOrObjData = "a=1&b=2" 形式
+         * 如果 contentype 为 "application/json" json 类型 那么参数postFromOrObjData = "{a:1,b:2}" 格式
+         */
+
         /// <param name="url">地址</param>
         /// <param name="Headers">头文件</param>
         /// <param name="postFromOrObjData">post数据</param>
@@ -84,6 +90,8 @@ namespace VideoAnalysis.Common
                 }
             }
         }
+
+        
 
         public string GetText()
         {

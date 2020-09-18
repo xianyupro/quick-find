@@ -19,6 +19,7 @@ using MouseHook = MouseKeyboardLibrary.MouseHook;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using QuickFind.TexorLax;
 
 namespace QuickFind
 {
@@ -220,7 +221,7 @@ namespace QuickFind
         {
             InitializeComponent();
 
-            boLoSearch = new BoLoSearch.BoLoSearch();
+            //boLoSearch = new BoLoSearch.BoLoSearch();
 
             SetStartup(_settings.LaunchOnStartup);
 
@@ -305,7 +306,7 @@ namespace QuickFind
 
         protected override void OnLoad(EventArgs e)
         {
-            Visible = false; // 隐藏窗体
+            //Visible = false; // 隐藏窗体
             ShowInTaskbar = false; // 移除状态栏
             base.OnLoad(e);
         }
@@ -596,10 +597,15 @@ namespace QuickFind
                     _currentWallpaper = bingImg.Img;
                     SetCopyrightTrayLabel(bingImg.Copyright, bingImg.CopyrightLink);
                     ShowSetWallpaperNotification();
+                    _settings.UpdateImgDay = DateTime.Now.DayOfYear.ToString();
+                    _settings.UpdataWallpaper = true;
+                    _trayMenu.MenuItems[3].Checked = _settings.UpdataWallpaper;
                 }
                 catch
                 {
                     ShowErrorNotification();
+                    _settings.UpdataWallpaper = false;
+                    _trayMenu.MenuItems[3].Checked = _settings.UpdataWallpaper;
                 }
             }).Start();
         }
@@ -876,6 +882,7 @@ namespace QuickFind
         #endregion
 
         #region 截屏并翻译
+        private Image SCaptrueImg;
         private bool SCaptrueFlag = false;
         private void ScATra()
         {
@@ -884,14 +891,8 @@ namespace QuickFind
             SCaptrueFlag = false;
             if (Clipboard.ContainsImage())
             {
-                Image img = Clipboard.GetImage();
-                Select_str = UnionOCR.UnionOCR.BaiduAPI(img);
-                if (Select_str != "")
-                {
-                    resultStr = TranslateAPI.Translate(Select_str, _settings);
-                    Console.WriteLine(resultStr);
-                    ResultFormShow = true;
-                }
+                SCaptrueImg = Clipboard.GetImage();
+                OpenChoseForm = true;
             }
         }
 
@@ -931,7 +932,7 @@ namespace QuickFind
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var zx = TranslateAPI.XiaoNiuTranslate("influxDB是没有提供直接删除数据记录的方法，但是提供数据保存策略，主要用于指定数据保留时间，超过指定时间，就删除这部分数据。\r\n查看当前数据库Retention Policies", "tl=en", "");
+            //LaTeX_MMS.LaTeXAPI(new Bitmap("1.png"));
         }
         public static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
         {
@@ -960,15 +961,18 @@ namespace QuickFind
         }
         
 
-
+        public static bool OCR_Tex_flag =false;
+        public static bool OCR_Lax_flag = false;
+        private bool OpenChoseForm = false;
         private void UpTimer_Tick(object sender, EventArgs e)
         {
             if (_settings.UpdataWallpaper)
             {
                 if (DateTime.Now.DayOfYear.ToString() != _settings.UpdateImgDay)
                 {
+                    _settings.UpdataWallpaper = false;
+                    _trayMenu.MenuItems[3].Checked = _settings.UpdataWallpaper;
                     SetWallpaper();
-                    _settings.UpdateImgDay = DateTime.Now.DayOfYear.ToString();
                 }
             }
 
@@ -1005,6 +1009,56 @@ namespace QuickFind
                 ShowWindow((int)resultForm.Handle, SW_SHOWNOACTIVATE);
                 SetWindowPos(resultForm.Handle, -1, 0, 0, 0, 0, 1 | 2 | 0x0010);
             }
+
+            #region 截图完成后操作
+
+            if (OpenChoseForm)
+            {
+                OpenChoseForm = false;
+                ChoseFun choseFun = new ChoseFun();
+                choseFun.Show();
+                
+            }
+            if (OCR_Tex_flag)
+            {
+                OCR_Tex_flag = false;
+                new Thread(() =>
+                {
+                    Select_str = UnionOCR.UnionOCR.BaiduAPI(SCaptrueImg);
+                    if (Select_str != "")
+                    {
+                        resultStr = TranslateAPI.Translate(Select_str, _settings);
+                        Console.WriteLine(resultStr);
+                        ResultFormShow = true;
+                    }
+                }).Start(); 
+                
+            }
+            if (OCR_Lax_flag)
+            {
+                OCR_Lax_flag = false;
+                Thread lax_thread = new Thread(() =>
+                {
+                   Select_str = LaTeX_MMS.LaTeXAPI(new Bitmap(SCaptrueImg));
+                   if (Select_str != "")
+                   {
+                        Clipboard.SetText(Select_str);
+                       Select_str = "识别成功";
+                       resultStr = "公式已经复制到剪切板，使用CTRL+V黏贴至Mathtype即可。";
+                       ResultFormShow = true;
+                   }
+                   else
+                   {
+                       Select_str = "识别失败";
+                       resultStr = "请重新截图并确保图中无其它无关内容。";
+                       ResultFormShow = true;
+                   }
+                });
+                lax_thread.SetApartmentState(ApartmentState.STA); 
+                lax_thread.Start();
+
+            }
+            #endregion
         }
 
     }

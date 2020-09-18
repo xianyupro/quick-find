@@ -148,6 +148,7 @@
     <Compile Include="Helper\ListViewItemComparer.cs" />
     <Compile Include="Helper\Settings.cs" />
     <Compile Include="HooK\HotKey.cs" />
+    <Compile Include="OCR\LaTeX_MMS.cs" />
     <Compile Include="OCR\PrScrn.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -182,6 +183,12 @@
     <Compile Include="OCR\OCR.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TexorLax\ChoseFun.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TexorLax\ChoseFun.Designer.cs">
+      <DependentUpon>ChoseFun.cs</DependentUpon>
+    </Compile>
     <Compile Include="TranslateApi\TranslateAPI.cs" />
     <Compile Include="Readme\UpdateInfoForm.cs">
       <SubType>Form</SubType>
@@ -214,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Readme\UpdateInfoForm.resx">
       <DependentUpon>UpdateInfoForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TexorLax\ChoseFun.resx">
+      <DependentUpon>ChoseFun.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest" />
