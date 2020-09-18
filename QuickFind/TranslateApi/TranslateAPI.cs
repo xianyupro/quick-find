@@ -5,7 +5,9 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Security;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Web;
 using VideoAnalysis.Common;
@@ -56,9 +58,18 @@ namespace TranslateApi
                 case "Baidu":
                     resultStr = BaiduTranslate(str, TargetLanguage, LanguageParas);
                     break;
+                case "XiaoNiu":
+                    resultStr = XiaoNiuTranslate(str, TargetLanguage, LanguageParas);
+                    break;
             }
             if (resultStr != "")
             {
+                return resultStr;
+            }
+            resultStr = XiaoNiuTranslate(str, TargetLanguage, LanguageParas);
+            if (resultStr != "")
+            {
+                _settings.TranslateMode = "XiaoNiu";
                 return resultStr;
             }
             resultStr = GoogleTranslate(str, TargetLanguage, LanguageParas);
@@ -245,6 +256,36 @@ namespace TranslateApi
             }
         }
 
+
+        public static string XiaoNiuTranslate(String str, String TargetLanguage, String LanguageParas)
+        {
+            // 改成您的APP ID
+            string apikey = "6ab6e32c506b0dd22c46df7554620c81";
+            str = str.Replace("\r\n", "");
+            str = str.Replace("\r", "");
+            str = str.Replace("\n", "");
+            string resultStr = "";
+            Dictionary<string, string> headers = new Dictionary<string, string>();
+            headers.Add("Timeout", "2000");
+            headers.Add("ContentType", "application/x-www-form-urlencoded; charset=UTF-8");
+            headers.Add("UserAgent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36");
+            headers.Add("Method", "POST");
+            string xiaoniu_url = "http://free.niutrans.com/NiuTransServer/translation";
+            var postData = TargetLanguage == "tl=en"? "from=zh&to=en&apikey=" + apikey + "&src_text=" + str: "from=en&to=zh&apikey=" + apikey + "&src_text=" + str;
+            try
+            {
+                Request Response = new Request(xiaoniu_url, headers, postData);
+                var text = Response.GetText();
+                var json_xiaoniu = JsonHelper.ConvertJson(text);
+                resultStr = json_xiaoniu["tgt_text"].ToString();
+                return resultStr;
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
         private static string EncryptString(string str)
         {
             MD5 md5 = MD5.Create();
@@ -261,6 +302,10 @@ namespace TranslateApi
             }
             // 返回加密的字符串
             return sb.ToString();
+        }
+        public static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        { 
+            return true; 
         }
         #endregion
     }

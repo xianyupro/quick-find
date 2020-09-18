@@ -43,7 +43,7 @@ namespace QuickFind
             boLoSearch = boLoSearchX;
             InputTx.TextChanged += InputTx_TextChanged;
             statusLabel.Text = "    Ready";
-            //QuickForm.STOPTranlate = true;
+            QuickForm.STOPTranlate = true;
         }
 
         private void SearchForm_Activated(object sender, EventArgs e)
@@ -341,6 +341,7 @@ namespace QuickFind
         {
             QuickForm.SearchFormOpen = false;
             QuickForm.StartUpdateDB = false;
+            QuickForm.STOPTranlate = false;
         }
 
         private void tsmiOpen_Click(object sender, EventArgs e)
@@ -573,6 +574,7 @@ namespace QuickFind
 
         private void ClosePB_Click(object sender, EventArgs e)
         {
+            QuickForm.STOPTranlate = false;
             this.Close();
             this.Dispose();
         }

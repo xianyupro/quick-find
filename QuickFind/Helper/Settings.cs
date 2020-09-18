@@ -150,7 +150,7 @@ namespace BingWallpaper
             [DataMember]
             public double UpdateTime = 0.5;
             [DataMember]
-            public string TranslateMode = "Google";
+            public string TranslateMode = "XiaoNiu";
         }
     }
 }

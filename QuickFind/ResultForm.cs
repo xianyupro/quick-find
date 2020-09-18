@@ -143,7 +143,7 @@ namespace QuickFind
         {
             switch (SEbt.Text)
             {
-                case "百度翻译":
+                case "小牛翻译":
                     SEbt.Text = "有道翻译";
                     new Thread(() =>
                     {
@@ -211,6 +211,24 @@ namespace QuickFind
                         lock_Form = false;
                     }).Start();
                     break;
+                case "百度翻译":
+                    SEbt.Text = "小牛翻译";
+                    new Thread(() =>
+                    {
+                        lock_Form = true;
+                        settings.TranslateMode = "XiaoNiu";
+                        Result = TranslateAPI.Translate(TitleX, settings); BeginInvoke(new Action(() => {
+                            ResultLabel.Text = Result; while (ResultLabel.Height * 3 / 2 > ResultLabel.MaximumSize.Width)
+                            {
+                                ResultLabel.MaximumSize = new Size(ResultLabel.MaximumSize.Width + 50, 1800);
+                            }
+                            this.Height = 74 + ResultLabel.Height + 8;
+                            this.MaximumSize = new Size(10 + ResultLabel.Width + 10, 1800);
+                            this.Width = 10 + ResultLabel.Width + 10;
+                        }), null);
+                        lock_Form = false;
+                    }).Start();
+                    break;
             }
 
         }
@@ -230,6 +248,9 @@ namespace QuickFind
                     break;
                 case "Baidu":
                     SEbt.Text = "百度翻译";
+                    break;
+                case "XiaoNiu":
+                    SEbt.Text = "小牛翻译";
                     break;
             }
         }

@@ -248,7 +248,7 @@ namespace BoLoSearch
             connection.Close();
             stopwatch.Stop();
             Console.WriteLine(stopwatch.ElapsedMilliseconds);
-            return (Dirs, Flists);
+            return (Dirs.OrderByDescending(item => new DirectoryInfo(item[1]).LastWriteTime).ToList(), Flists);
         }
 
     }

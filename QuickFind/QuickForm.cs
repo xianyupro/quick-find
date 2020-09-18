@@ -16,6 +16,9 @@ using System.Windows.Forms;
 using TranslateApi;
 using Settings = BingWallpaper.Settings;
 using MouseHook = MouseKeyboardLibrary.MouseHook;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace QuickFind
 {
@@ -928,7 +931,11 @@ namespace QuickFind
 
         private void button3_Click(object sender, EventArgs e)
         {
-            ClosePress(pro);
+            var zx = TranslateAPI.XiaoNiuTranslate("influxDB是没有提供直接删除数据记录的方法，但是提供数据保存策略，主要用于指定数据保留时间，超过指定时间，就删除这部分数据。\r\n查看当前数据库Retention Policies", "tl=en", "");
+        }
+        public static bool CheckValidationResult(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors errors)
+        {
+            return true;
         }
 
 
