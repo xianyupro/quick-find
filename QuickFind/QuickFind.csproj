@@ -167,6 +167,31 @@
     <Compile Include="BoLoSearch\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ScreenShoot\FormShot.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScreenShoot\FormShot.designer.cs">
+      <DependentUpon>FormShot.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenShoot\LoadingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScreenShoot\LoadingForm.designer.cs">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenShoot\OCR_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScreenShoot\OCR_Form.designer.cs">
+      <DependentUpon>OCR_Form.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenShoot\ToolButtons.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ScreenShoot\ToolButtons.designer.cs">
+      <DependentUpon>ToolButtons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ScreenShoot\TranslateAPISingle.cs" />
     <Compile Include="SpiderCommon\JsonHelper.cs" />
     <Compile Include="SpiderCommon\SpiderHelper.cs" />
     <Compile Include="QuickForm.cs">
@@ -222,6 +247,18 @@
     <EmbeddedResource Include="Readme\UpdateInfoForm.resx">
       <DependentUpon>UpdateInfoForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ScreenShoot\FormShot.resx">
+      <DependentUpon>FormShot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenShoot\LoadingForm.resx">
+      <DependentUpon>LoadingForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenShoot\OCR_Form.resx">
+      <DependentUpon>OCR_Form.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenShoot\ToolButtons.resx">
+      <DependentUpon>ToolButtons.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TexorLax\ChoseFun.resx">
       <DependentUpon>ChoseFun.cs</DependentUpon>
     </EmbeddedResource>
@@ -264,6 +301,14 @@
     <None Include="Resources\SharpShell.dll" />
     <None Include="Resources\srm.exe" />
     <None Include="Resources\ImgP.dll" />
+    <None Include="Resources\loading.png" />
+    <None Include="Resources\ocr.png" />
+    <None Include="Resources\保存.png" />
+    <None Include="Resources\错.png" />
+    <None Include="Resources\翻译.png" />
+    <None Include="Resources\分割线.png" />
+    <None Include="Resources\公式.png" />
+    <None Include="Resources\完成.png" />
     <Content Include="skyMap.ico" />
   </ItemGroup>
   <ItemGroup>

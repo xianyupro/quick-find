@@ -14,6 +14,7 @@ namespace QuickFind.UnionOCR
     {
         public static string BaiduAPI(Image bitmap)
         {
+            string token = "24.5142d6d4850be2c098165f677b8fe68b.2592000.1603087490.282335-22701901";
             string OCRresult = "";
             string API_KEY = "p8Tgf4cVCWi0QOGjnqfu22G9";
             string SECRET_KEY = "UvzNMtiR728kmjai8UjMLEctfZ2eVPNm";

@@ -20,6 +20,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using QuickFind.TexorLax;
+using ScreenShoter;
 
 namespace QuickFind
 {
@@ -221,7 +222,7 @@ namespace QuickFind
         {
             InitializeComponent();
 
-            //boLoSearch = new BoLoSearch.BoLoSearch();
+            boLoSearch = new BoLoSearch.BoLoSearch();
 
             SetStartup(_settings.LaunchOnStartup);
 
@@ -306,7 +307,7 @@ namespace QuickFind
 
         protected override void OnLoad(EventArgs e)
         {
-            //Visible = false; // 隐藏窗体
+            Visible = false; // 隐藏窗体
             ShowInTaskbar = false; // 移除状态栏
             base.OnLoad(e);
         }
@@ -323,11 +324,7 @@ namespace QuickFind
             {
                 if(intervalTime + 1 > (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds)
                 {
-                    var thread = new Thread(() => ScATra());
-                    //注意，一般启动一个线程的时候没有这句话，但是要操作剪切板的话这句话是必需要加上的，因为剪切板只能在单线
-                    //程单元中访问，这里的STA就是指单线程单元
-                    thread.SetApartmentState(ApartmentState.STA);
-                    thread.Start();
+                    ScATra();
                 }
                 intervalTime = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
             }
@@ -383,7 +380,7 @@ namespace QuickFind
         {
             if (eventType == "KeyDown" && keyCode == "S" && alt == "True")
             {
-                ScreenCapture();
+                ScATra();
                 //SearchFiles();
             }
             if (eventType == "KeyDown" && keyCode == "LControlKey" && alt == "False" && shift == "False" && control == "False")
@@ -515,6 +512,7 @@ namespace QuickFind
         private void CopyAndTranslate()
         {
             if (SCaptrueFlag) return; //在截屏时，不进行复制翻译操作。
+            if (STOPTranlate) return;
             try
             {
                 Select_str = GetCopySelect();
@@ -886,14 +884,23 @@ namespace QuickFind
         private bool SCaptrueFlag = false;
         private void ScATra()
         {
-            SCaptrueFlag = true;
-            PrScrn_Dll.PrScrn();
-            SCaptrueFlag = false;
-            if (Clipboard.ContainsImage())
+            foreach (Form f in Application.OpenForms)
             {
-                SCaptrueImg = Clipboard.GetImage();
-                OpenChoseForm = true;
+                if (f is FormShot)
+                {
+                    return;
+                }
             }
+            new FormShot().Show();
+
+            //SCaptrueFlag = true;
+            //PrScrn_Dll.PrScrn();
+            //SCaptrueFlag = false;
+            //if (Clipboard.ContainsImage())
+            //{
+            //    SCaptrueImg = Clipboard.GetImage();
+            //    OpenChoseForm = true;
+            //}
         }
 
         #endregion
@@ -943,20 +950,10 @@ namespace QuickFind
         private void SearchFiles()
         {
             bool open = false;
-            //foreach (Form f in Application.OpenForms)
-            //{
-            //    if (f is SearchForm)
-            //    {
-            //        open = true;
-            //        f.Show();
-            //        f.BringToFront();
-            //    }
-            //}
             if (!open)
             {
                 SearchForm searchForm = new SearchForm(boLoSearch);
                 searchForm.Show();
-                //searchForm.BringToFront();
             }
         }
         
@@ -1010,55 +1007,57 @@ namespace QuickFind
                 SetWindowPos(resultForm.Handle, -1, 0, 0, 0, 0, 1 | 2 | 0x0010);
             }
 
-            #region 截图完成后操作
+            //#region 截图完成后操作
 
-            if (OpenChoseForm)
-            {
-                OpenChoseForm = false;
-                ChoseFun choseFun = new ChoseFun();
-                choseFun.Show();
+            //if (OpenChoseForm)
+            //{
+            //    OpenChoseForm = false;
+            //    ChoseFun choseFun = new ChoseFun();
+            //    choseFun.Show();
                 
-            }
-            if (OCR_Tex_flag)
-            {
-                OCR_Tex_flag = false;
-                new Thread(() =>
-                {
-                    Select_str = UnionOCR.UnionOCR.BaiduAPI(SCaptrueImg);
-                    if (Select_str != "")
-                    {
-                        resultStr = TranslateAPI.Translate(Select_str, _settings);
-                        Console.WriteLine(resultStr);
-                        ResultFormShow = true;
-                    }
-                }).Start(); 
+            //}
+            //if (OCR_Tex_flag)
+            //{
+            //    OCR_Tex_flag = false;
+            //    new Thread(() =>
+            //    {
+            //        Select_str = UnionOCR.UnionOCR.BaiduAPI(SCaptrueImg);
+            //        if (Select_str != "")
+            //        {
+            //            resultStr = TranslateAPI.Translate(Select_str, _settings);
+            //            Console.WriteLine(resultStr);
+            //            ResultFormShow = true;
+            //        }
+            //    }).Start(); 
                 
-            }
-            if (OCR_Lax_flag)
-            {
-                OCR_Lax_flag = false;
-                Thread lax_thread = new Thread(() =>
-                {
-                   Select_str = LaTeX_MMS.LaTeXAPI(new Bitmap(SCaptrueImg));
-                   if (Select_str != "")
-                   {
-                        Clipboard.SetText(Select_str);
-                       Select_str = "识别成功";
-                       resultStr = "公式已经复制到剪切板，使用CTRL+V黏贴至Mathtype即可。";
-                       ResultFormShow = true;
-                   }
-                   else
-                   {
-                       Select_str = "识别失败";
-                       resultStr = "请重新截图并确保图中无其它无关内容。";
-                       ResultFormShow = true;
-                   }
-                });
-                lax_thread.SetApartmentState(ApartmentState.STA); 
-                lax_thread.Start();
+            //}
+            //if (OCR_Lax_flag)
+            //{
+            //    OCR_Lax_flag = false;
+            //    Thread lax_thread = new Thread(() =>
+            //    {
+            //        STOPTranlate = true;
+            //        var str_lax = LaTeX_MMS.LaTeXAPI(new Bitmap(SCaptrueImg));
+            //        if (str_lax != "")
+            //        {
+            //            Clipboard.SetText(str_lax);
+            //            Select_str = "识别成功";
+            //            resultStr = "公式已经复制到剪切板，使用CTRL+V黏贴至Mathtype即可。";
+            //            ResultFormShow = true;
+            //        }
+            //        else
+            //        {
+            //            Select_str = "识别失败";
+            //            resultStr = "请重新截图并确保图中无其它无关内容。";
+            //            ResultFormShow = true;
+            //        }
+            //        STOPTranlate = false;
+            //    });
+            //    lax_thread.SetApartmentState(ApartmentState.STA); 
+            //    lax_thread.Start();
 
-            }
-            #endregion
+            //}
+            //#endregion
         }
 
     }
